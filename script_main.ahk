@@ -411,9 +411,21 @@ openChrome(programTitle, ahkexe, programPath, profile) {
 }
 
 openLink(profile, url) {
-    Run(path_chrome " " "--profile-directory=" profile " " url)
-    WinWait("A")
-    WinActivate("A")
+    if (ProcessExist(ahkexe_chrome)) {
+        active_id := WinGetID("A")
+        window_id := WinGetID(ahkexe_chrome)
+        if (active_id != window_id) {
+            Run(path_chrome " " "--profile-directory=" profile " " url)
+            WinWait(ahkexe_chrome, , 5)
+            WinActivate(ahkexe_chrome)
+        } else {
+            WinActivate(window_id)
+        }
+    } else {
+        Run(path_chrome " " "--profile-directory=" profile " " url)
+        WinWait(ahkexe_chrome, , 5)
+        WinActivate(ahkexe_chrome)
+    }
 }
 
 openNotionPage(pageTitle, pageID, notionapath) {
