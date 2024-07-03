@@ -42,13 +42,13 @@ bookmark2 := " "
 ; ==============================================================================
 
 highperformance := "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c"
-sound_highperformance := "C:\Program Files (others)\Automation\Macropad\power\power plans\audio\highperformance-notification.mp3"
+sound_highperformance := "power\power plans\audio\highperformance-notification.mp3"
 
 powersaver := "a1841308-3541-4fab-bc81-f71556f20b4a"
-sound_powersaver := "C:\Program Files (others)\Automation\Macropad\power\power plans\audio\powersaver-level-up.mp3"
+sound_powersaver := "power\power plans\audio\powersaver-level-up.mp3"
 
 studyplan := "9897998c-92de-4669-853f-b7cd3ecb2790" ; ryzen balanced (sleep = never)
-sound_studyplan := "C:\Program Files (others)\Automation\Macropad\power\power plans\audio\studyplan-message-incoming.mp3"
+sound_studyplan := "power\power plans\audio\studyplan-message-incoming.mp3"
 
 ; ==============================================================================
 ; Folders definitions
