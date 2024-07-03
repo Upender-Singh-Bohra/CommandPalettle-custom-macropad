@@ -71,7 +71,7 @@ path_datastructure := "D:\Prog\Data Structure"
 ftitle_webdev := "Web development"
 path_webdev := "D:\Prog\Web development"
 
-ftitle_scripts := "Scripts"
+ftitle_scripts := "Macropad"
 path_scripts := "C:\Program Files (others)\Automation\Macropad"
 
 ; ==============================================================================
@@ -164,25 +164,25 @@ ctrl & f21:: {
 
 ; vscode - D:\Prog
 ctrl & f22:: {
-    vscodeinFolder(ftitle_prog, ahkexe_vscode, path_vscode, path_prog)
+    vscodeinFolder(ftitle_prog, path_vscode, path_prog)
     Return
 }
 
 ; vscode - D:\Data Structures
 ctrl & f23:: {
-    vscodeinFolder(ftitle_datastructure, ahkexe_vscode, path_vscode, path_datastructure)
+    vscodeinFolder(ftitle_datastructure, path_vscode, path_datastructure)
     Return
 }
 
 ; vscode - D:\Web Development
 ctrl & f24:: {
-    vscodeinFolder(ftitle_webdev, ahkexe_vscode, path_vscode, path_webdev)
+    vscodeinFolder(ftitle_webdev, path_vscode, path_webdev)
     Return
 }
 
 ; vscode - D:\Projects
 alt & f13:: {
-    vscodeinFolder(ftitle_projects, ahkexe_vscode, path_vscode, path_projects)
+    vscodeinFolder(ftitle_projects, path_vscode, path_projects)
     Return
 }
 
@@ -379,7 +379,6 @@ shift & f21:: {
 ; Function definitions
 ; ==============================================================================
 
-
 openProgram(programTitle, ahkexe, programPath) {
     winID := programTitle " " ahkexe
     if WinExist(winID) {
@@ -449,8 +448,8 @@ openNotionPage(pageTitle, pageID, notionapath) {
     }
 }
 
-vscodeinFolder(foldertitle, ahkexe, vscodepath, folder) {
-    command := foldertitle " " ahkexe
+vscodeinFolder(foldertitle, vscodepath, folder) {
+    command := foldertitle " " ahkexe_vscode
     if WinExist(command) {
         if WinActive(command) {
             WinMinimize(command)
