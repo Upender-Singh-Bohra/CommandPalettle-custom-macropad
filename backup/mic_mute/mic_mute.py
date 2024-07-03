@@ -1,4 +1,5 @@
 import pygame
+import os
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
@@ -19,13 +20,19 @@ def toggle_microphone_mute():
     # Toggle the microphone mute state
     mic_volume.SetMute(not current_mute_state, None)
 
+    # Get the script directory
+    script_dir = os.path.dirname(__file__)
+
     # Play audio cue based on mute state
     if not current_mute_state:  # Microphone was previously unmuted
-        pygame.mixer.music.load(r"C:\Program Files (others)\Automation\Scripts\sound\mic_mute\mute.mp3")
+        mute_sound = os.path.join(script_dir, "sound", "mute.mp3")
+        pygame.mixer.music.load(mute_sound)
         pygame.mixer.music.play()
     else:  # Microphone was previously muted
-        pygame.mixer.music.load(r"C:\Program Files (others)\Automation\Scripts\sound\mic_mute\unmute.mp3")
+        unmute_sound = os.path.join(script_dir, "sound", "unmute.mp3")
+        pygame.mixer.music.load(unmute_sound)
         pygame.mixer.music.play()
+    
     pygame.time.wait(1300)  # Adjust delay time as needed
 
 if __name__ == "__main__":
