@@ -231,53 +231,54 @@ alt & f20:: {
 
 ;links
 alt & f21:: {
-    openLink(profile1, "chatgpt.com")
+    wintitle := "ChatGPT - Google Chrome"
+    openLink(profile1, "chatgpt.com", wintitle)
     Return
 }
 
 
 alt & f22:: {
-    openLink(profile1, "gemini.google.com/app")
+    openLink(profile1, "gemini.google.com/app", "Gemini - Google Chrome")
     Return
 }
 
 alt & f23:: {
-    openLink(profile1, "mail.google.com/mail/u/0/#inbox")
+    openLink(profile1, "mail.google.com/mail/u/0/#inbox", "Gmail - Google Chrome")
     Return
 }
 
 alt & f24:: {
-    openLink(profile2, "mail.google.com/mail/u/0/#inbox")
+    openLink(profile2, "mail.google.com/mail/u/0/#inbox", "Gmail - Google Chrome")
     Return
 }
 
 shift & f14:: {
-    openLink(profile1, "web.whatsapp.com/")
+    openLink(profile1, "web.whatsapp.com/", "WhatsApp Web - Google Chrome")
     Return
 }
 
 shift & f15:: {
-    openLink(profile1, "youtube.com/feed/subscriptions")
+    openLink(profile1, "youtube.com/feed/subscriptions", "Subscriptions - YouTube - Google Chrome")
     Return
 }
 
 shift & f16:: { ; K
-    openLink(profile1, bookmark1)
+    openLink(profile1, bookmark1, "wintitle")
     Return
 }
 
 shift & f17:: {
-    openLink(profile1, bookmark2)
+    openLink(profile1, bookmark2, "wintitle")
     Return
 }
 
 shift & f18:: {
-    openLink(profile2, "github.com")
+    openLink(profile2, "github.com", "GitHub - Google Chrome")
     Return
 }
 
 ; shift & f19:: {
-;     openLink(profile, url)
+;     openLink(profile, url, "wintitle")
 ;     Return
 ; }
 
@@ -409,21 +410,13 @@ openChrome(programTitle, ahkexe, programPath, profile) {
     }
 }
 
-openLink(profile, url) {
-    if (ProcessExist(ahkexe_chrome)) {
-        active_id := WinGetID("A")
-        window_id := WinGetID(ahkexe_chrome)
-        if (active_id != window_id) {
-            Run(path_chrome " " "--profile-directory=" profile " " url)
-            WinWait(ahkexe_chrome, , 5)
-            WinActivate(ahkexe_chrome)
-        } else {
-            WinActivate(window_id)
-        }
+openLink(profile, url, wintitle) {
+    if WinExist(wintitle) {
+        WinActivate(wintitle)
     } else {
-        Run(path_chrome " " "--profile-directory=" profile " " url)
-        WinWait(ahkexe_chrome, , 5)
-        WinActivate(ahkexe_chrome)
+        Run(path_chrome " --profile-directory=" profile " " url)
+        WinWait(wintitle)
+        WinActivate(wintitle)
     }
 }
 
