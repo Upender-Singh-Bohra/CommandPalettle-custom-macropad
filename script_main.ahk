@@ -71,8 +71,8 @@ path_datastructure := "D:\Prog\Data Structure"
 ftitle_webdev := "Web development"
 path_webdev := "D:\Prog\Web development"
 
-ftitle_scripts := "Macropad"
-path_scripts := "C:\Program Files (others)\Automation\Macropad"
+ftitle_scripts := "Command Palettle - macropad"
+path_scripts := "C:\Program Files (others)\Automation\Command Palette - macropad"
 
 ; ==============================================================================
 ; Apps definitions
@@ -197,17 +197,17 @@ alt & f14:: {
 ; ---- Notion App / Pages ----
 
 alt & f15:: {
-    openNotionPage(pagetitle_todo, pageID_todo, path_notion)
+    openNotionPage(pagetitle_todo, pageID_todo)
     Return
 }
 
 alt & f16:: {
-    openNotionPage(pagetitle_deadlines, pageID_deadlines, path_notion)
+    openNotionPage(pagetitle_deadlines, pageID_deadlines)
     Return
 }
 
 alt & f17:: {
-    openNotionPage(pagetitle_notes, pageID_notes, path_notion)
+    openNotionPage(pagetitle_notes, pageID_notes)
     Return
 }
 
@@ -217,7 +217,7 @@ alt & f18:: {
 }
 
 alt & f19:: {
-    openNotionPage(pagetitle_lifeforce, pageID_lifeforce, path_notion)
+    openNotionPage(pagetitle_lifeforce, pageID_lifeforce)
     KeyWait ("alt")
     KeyWait ("f19")
     Return
@@ -262,15 +262,15 @@ shift & f15:: {
     Return
 }
 
-shift & f16:: { ; K
-    openLink(profile1, bookmark1, "wintitle")
-    Return
-}
+; shift & f16:: { ; K
+;     openLink(profile1, bookmark1, "wintitle")
+;     Return
+; }
 
-shift & f17:: {
-    openLink(profile1, bookmark2, "wintitle")
-    Return
-}
+; shift & f17:: {
+;     openLink(profile1, bookmark2, "wintitle")
+;     Return
+; }
 
 shift & f18:: {
     openLink(profile2, "github.com", "GitHub - Google Chrome")
@@ -311,7 +311,7 @@ shift & f21:: {
 }
 
 
-^+#5:: {
+alt & `:: {
     openProgram(ptitle_keepass, ahkexe_keepass, path_keepass)
     Return
 }
@@ -411,16 +411,21 @@ openChrome(programTitle, ahkexe, programPath, profile) {
 }
 
 openLink(profile, url, wintitle) {
-    if WinExist(wintitle) {
-        WinActivate(wintitle)
-    } else {
-        Run(path_chrome " --profile-directory=" profile " " url)
-        WinWait(wintitle)
-        WinActivate(wintitle)
+    try {
+        if WinExist(wintitle) {
+            WinActivate(wintitle)
+        } else {
+            Run(path_chrome " --profile-directory=" profile " " url)
+            WinWait(wintitle)
+            WinActivate(wintitle)
+        }
+    } catch {
+        ; Handle the error here (optional)
+        ; You can add logging or other actions if needed
     }
 }
 
-openNotionPage(pageTitle, pageID, notionapath) {
+openNotionPage(pageTitle, pageID) {
     winID := pageTitle " " ahkexe_notion
     if WinExist(winID) {
         if WinActive(winID) {
@@ -481,19 +486,35 @@ vscodeinCurrentFolder(path_vscode) {
     }
 }
 
-terminateActiveWindow()
-{
+; terminateActiveWindow()
+; {
+;     active_class := WinGetClass("A")
+;     if (active_class = "Progman" || active_class = "WorkerW" || active_class = "DV2ControlHost" || active_class = "RainmeterMeterWindow") {
+;         MsgBox("The active window is the desktop or Start menu. Exiting script.", "Warning", 64)
+;         return
+;     }
+;     active_id := WinGetID("A")
+;     result := WinClose("ahk_id " active_id)
+;     if (result == 0)
+;         MsgBox("Failed to close the active window.", "Warning", 48)
+; }
+
+terminateActiveWindow() {
     active_class := WinGetClass("A")
-    ; Check if the active window is the desktop or Start menu
-    if (active_class = "Progman" || active_class = "WorkerW" || active_class = "DV2ControlHost" || active_class = "RainmeterMeterWindow") {
-        MsgBox("The active window is the desktop or Start menu. Exiting script.", "Warning", 64)
-        return
+    ignore_classes := ["Progman", "WorkerW", "DV2ControlHost", "RainmeterMeterWindow"]
+    for _, class in ignore_classes {
+        if (active_class = class) {
+            MsgBox("The active window is the desktop or Start menu. Exiting script.", "Warning", 64)
+            return
+        }
     }
+
     active_id := WinGetID("A")
     result := WinClose("ahk_id " active_id)
     if (result == 0)
         MsgBox("Failed to close the active window.", "Warning", 48)
 }
+
 
 killActiveProgram() {
     PID := WinGetPID("A")
