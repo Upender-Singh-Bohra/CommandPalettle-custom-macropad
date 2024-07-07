@@ -2,6 +2,16 @@
 ; With single modifier actual names can be written e.g. Lctrl & f13.
 ; (Lctrl & Lsfhit & f13) - invalid
 
+; ; optimization Start - Currently for testing only 
+; KeyHistory 0
+; ListLines(0)
+; ProcessSetPriority('A')
+; SetKeyDelay(-1, -1)
+; SetMouseDelay(-1)
+; SetDefaultMouseSpeed(0)
+; SetWinDelay(-1)
+;  ; End
+
 #Requires AutoHotkey v2.0
 
 ; #NoTrayIcon
@@ -158,31 +168,31 @@ ctrl & f19:: {
 }
 
 ctrl & f21:: {
-    vscodeinCurrentFolder(path_vscode)
+    vscodeinCurrentFolder()
     Return
 }
 
 ; vscode - D:\Prog
 ctrl & f22:: {
-    vscodeinFolder(ftitle_prog, path_vscode, path_prog)
+    vscodeinFolder(ftitle_prog, path_prog)
     Return
 }
 
 ; vscode - D:\Data Structures
 ctrl & f23:: {
-    vscodeinFolder(ftitle_datastructure, path_vscode, path_datastructure)
+    vscodeinFolder(ftitle_datastructure, path_datastructure)
     Return
 }
 
 ; vscode - D:\Web Development
 ctrl & f24:: {
-    vscodeinFolder(ftitle_webdev, path_vscode, path_webdev)
+    vscodeinFolder(ftitle_webdev, path_webdev)
     Return
 }
 
 ; vscode - D:\Projects
 alt & f13:: {
-    vscodeinFolder(ftitle_projects, path_vscode, path_projects)
+    vscodeinFolder(ftitle_projects, path_projects)
     Return
 }
 
@@ -225,7 +235,7 @@ alt & f19:: {
 
 ; Chrome
 alt & f20:: {
-    openChrome(ptitle_chrome, ahkexe_chrome, path_chrome, profile1)
+    openChrome(ptitle_chrome, profile1)
     Return
 }
 
@@ -395,8 +405,8 @@ openProgram(programTitle, ahkexe, programPath) {
     }
 }
 
-openChrome(programTitle, ahkexe, programPath, profile) {
-    winID := programTitle " " ahkexe
+openChrome(programTitle, profile) {
+    winID := programTitle " " ahkexe_chrome
     if WinExist(winID) {
         if WinActive(winID) {
             WinMinimize(winID)
@@ -404,7 +414,7 @@ openChrome(programTitle, ahkexe, programPath, profile) {
             WinActivate(winID)
         }
     } else {
-        Run(programPath . " --profile-directory=" profile)
+        Run(path_chrome . " --profile-directory=" profile)
         WinWait(winID)
         WinActivate(winID)
     }
@@ -446,7 +456,7 @@ openNotionPage(pageTitle, pageID) {
     }
 }
 
-vscodeinFolder(foldertitle, vscodepath, folder) {
+vscodeinFolder(foldertitle, folder) {
     command := foldertitle " " ahkexe_vscode
     if WinExist(command) {
         if WinActive(command) {
@@ -455,13 +465,13 @@ vscodeinFolder(foldertitle, vscodepath, folder) {
             WinActivate(command)
         }
     } else {
-        Run('"' vscodepath '"' " " ' "' folder '"')
+        Run('"' path_vscode '"' " " ' "' folder '"')
         WinWait(command)
         WinActivate(command)
     }
 }
 
-vscodeinCurrentFolder(path_vscode) {
+vscodeinCurrentFolder() {
     DetectHiddenWindows True
     if !WinExist("ahk_class CabinetWClass") {
         MsgBox "Explorer isn't active", "Warning"
