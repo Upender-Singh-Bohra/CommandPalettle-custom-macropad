@@ -241,8 +241,7 @@ alt & f20:: {
 
 ;links
 alt & f21:: {
-    wintitle := "ChatGPT - Google Chrome"
-    openLink(profile1, "chatgpt.com", wintitle)
+    openLink(profile1, "chatgpt.com", "ChatGPT - Google Chrome")
     Return
 }
 
@@ -272,10 +271,10 @@ shift & f15:: {
     Return
 }
 
-; shift & f16:: { ; K
-;     openLink(profile1, bookmark1, "wintitle")
-;     Return
-; }
+shift & f16:: { ; K
+    openLink(profile2, bookmark1, "")
+    Return
+}
 
 ; shift & f17:: {
 ;     openLink(profile1, bookmark2, "wintitle")
@@ -430,8 +429,7 @@ openLink(profile, url, wintitle) {
             WinActivate(wintitle)
         }
     } catch {
-        ; Handle the error here (optional)
-        ; You can add logging or other actions if needed
+        ; Empty catch block to hide / ignore error message from WinActive(wintitle)
     }
 }
 
@@ -447,9 +445,9 @@ openNotionPage(pageTitle, pageID) {
         if WinExist(ahkexe_notion) {
             Run("notion://www.notion.so/" . pageID)
             WinWait(ahkexe_notion)
-            WinActivate(ahkexe_notion) ;
+            WinActivate(ahkexe_notion)
         } else {
-            Run(path_notion . " " . "notion://www.notion.so/" . pageID)
+            Run(path_notion " " "notion://www.notion.so/" pageID)
             WinWait(ahkexe_notion)
             WinActivate(ahkexe_notion)
         }
@@ -495,19 +493,6 @@ vscodeinCurrentFolder() {
         MsgBox "Failed to launch Visual Studio Code. ErrorLevel: " . ErrorLevel
     }
 }
-
-; terminateActiveWindow()
-; {
-;     active_class := WinGetClass("A")
-;     if (active_class = "Progman" || active_class = "WorkerW" || active_class = "DV2ControlHost" || active_class = "RainmeterMeterWindow") {
-;         MsgBox("The active window is the desktop or Start menu. Exiting script.", "Warning", 64)
-;         return
-;     }
-;     active_id := WinGetID("A")
-;     result := WinClose("ahk_id " active_id)
-;     if (result == 0)
-;         MsgBox("Failed to close the active window.", "Warning", 48)
-; }
 
 terminateActiveWindow() {
     active_class := WinGetClass("A")
