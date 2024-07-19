@@ -2,16 +2,6 @@
 ; With single modifier actual names can be written e.g. Lctrl & f13.
 ; (Lctrl & Lsfhit & f13) - invalid
 
-; ; optimization Start - Currently for testing only 
-; KeyHistory 0
-; ListLines(0)
-; ProcessSetPriority('A')
-; SetKeyDelay(-1, -1)
-; SetMouseDelay(-1)
-; SetDefaultMouseSpeed(0)
-; SetWinDelay(-1)
-;  ; End
-
 #Requires AutoHotkey v2.0
 
 ; #NoTrayIcon
@@ -241,53 +231,53 @@ alt & f20:: {
 
 ;links
 alt & f21:: {
-    openLink(profile1, "chatgpt.com", "ChatGPT - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 
 alt & f22:: {
-    openLink(profile1, "gemini.google.com/app", "Gemini - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 alt & f23:: {
-    openLink(profile1, "mail.google.com/mail/u/0/#inbox", "Gmail - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 alt & f24:: {
-    openLink(profile2, "mail.google.com/mail/u/0/#inbox", "Gmail - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 shift & f14:: {
-    openLink(profile1, "web.whatsapp.com/", "WhatsApp Web - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 shift & f15:: {
-    openLink(profile1, "youtube.com/feed/subscriptions", "Subscriptions - YouTube - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 shift & f16:: { ; K
-    openLink(profile2, bookmark1, "")
+    openLink(profile, url, wintitle)
     Return
 }
 
 ; shift & f17:: {
-;     openLink(profile1, bookmark2, "wintitle")
-;     Return
+;   openLink(profile, url, wintitle)
+;   Return
 ; }
 
 shift & f18:: {
-    openLink(profile2, "github.com", "GitHub - Google Chrome")
+    openLink(profile, url, wintitle)
     Return
 }
 
 ; shift & f19:: {
-;     openLink(profile, url, "wintitle")
+;     openLink(profile, url, wintitle)
 ;     Return
 ; }
 
@@ -423,13 +413,17 @@ openLink(profile, url, wintitle) {
     try {
         if WinExist(wintitle) {
             WinActivate(wintitle)
+            Return
         } else {
             Run(path_chrome " --profile-directory=" profile " " url)
             WinWait(wintitle)
             WinActivate(wintitle)
+            Return
         }
+
     } catch {
         ; Empty catch block to hide / ignore error message from WinActive(wintitle)
+        Return
     }
 }
 
@@ -495,19 +489,24 @@ vscodeinCurrentFolder() {
 }
 
 terminateActiveWindow() {
-    active_class := WinGetClass("A")
-    ignore_classes := ["Progman", "WorkerW", "DV2ControlHost", "RainmeterMeterWindow"]
-    for _, class in ignore_classes {
-        if (active_class = class) {
-            MsgBox("The active window is the desktop or Start menu. Exiting script.", "Warning", 64)
-            return
+    try {
+        active_class := WinGetClass("A")
+        ignore_classes := ["Progman", "WorkerW", "DV2ControlHost", "RainmeterMeterWindow"]
+        for _, class in ignore_classes {
+            if (active_class = class) {
+                MsgBox("The active window is the desktop or Start menu. Exiting script.", "Warning", 64)
+                return
+            }
         }
-    }
 
-    active_id := WinGetID("A")
-    result := WinClose("ahk_id " active_id)
-    if (result == 0)
-        MsgBox("Failed to close the active window.", "Warning", 48)
+        active_id := WinGetID("A")
+        result := WinClose("ahk_id " active_id)
+        if (result == 0)
+            MsgBox("Failed to close the active window.", "Warning", 48)
+    }
+    catch {
+        ; Emtpy catch block to ignore errors from WinGetID("A")
+    }
 }
 
 
